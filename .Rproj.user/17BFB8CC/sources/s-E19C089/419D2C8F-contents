@@ -1,0 +1,112 @@
+### IMPORT THE DATASET
+cars<- read.csv("~/Desktop/Ubiqum/cars.csv")
+View(cars)
+
+### RENAME THE COLUMNS
+names(cars) <-c("name.of.car","speed.of.car", "distance.of.car")
+
+### Create Squared Speed Column - the reason for this is to plot the squared speed to better identify outliers. 
+cars$Squared.Speed<- cars$speed.of.car*cars$speed.of.car
+
+### REMOVE THE OUTLIER
+outliers <- boxplot(cars$distance.of.car, plot=FALSE)$out
+show(outliers)
+cars <- cars[-which(cars$distance.of.car %in% outliers),]
+
+### DATASET CLEANED
+plot(cars$distance.of.car, cars$speed.of.car)
+
+set.seed(123)
+### SET TRAINING AND TESTING
+showtrainSize<-round(nrow(cars)*0.7) 
+testSize<-nrow(cars)-trainSize
+training_indices<-sample(seq_len(nrow(cars)),size =trainSize)
+trainSet<-cars[training_indices,]
+testSet<-cars[-training_indices,] 
+
+### LINEAR REGRESSION
+MOD <- lm(distance.of.car ~ speed.of.car, trainSet)
+coefficients(MOD)
+
+COEFF.INTERCEPT <- coefficients(MOD)[1]
+COEFF.SLOPE <- coefficients(MOD)[2]
+
+
+summary(MOD)
+Prediction <- predict(MOD,testSet)
+
+Predictions
+1           2           3           4           6          12          15 
+-13.7686606 -13.7686606   0.6392001   0.6392001  10.2444406  24.6523013  24.6523013 
+17          28          32          35          41          42          49 
+29.4549216  43.8627823  53.4680228  53.4680228  63.0732632  63.0732632  82.2837442 
+> 
+
+##GRAPHIC Plotting
+  
+library(ggplot2)
+f <- ggplot2::ggplot(cars, aes_(x= cars$distance.of.car, y = cars$speed.of.car)) 
+
+f + geom_abline(COEFF.INTERCEPT, COEFF.SLOPE)
+
+# Fit lm model using 10-fold CV: model
+model <- train(
+  price~., diamonds,
+  method = "lm",
+  trControl = trainControl(
+    method = "cv", number = 10,
+    verboseIter = TRUE
+  )
+)
+
+
+
+David 4:28 PM
+#Fit linear model to training data
+lm_model1 <- lm(distance_of_car~ speed_of_car_squared, training_set)
+lm_model2 <- lm(distance_of_car~ speed_of_car, training_set)
+
+#Summary for both statistics model
+output_lm_model1 <- summary(lm_model1)
+output_lm_model2 <- summary(lm_model2)
+
+#Model 1 has the greatest R squared
+#Make predictions for both models on test set
+lm_model1_test <- lm(distance_of_car~ speed_of_car_squared, test_set)
+output_lm_model1_test <- summary(lm_model1_test)
+print(output_lm_model1_test)
+predictions_model1 <- predict(lm_model1, test_set)
+#Store coefficients and equation of final model
+lm_model1_coef <- coefficients(lm_model1)
+lm_model1_intercept <- lm_model1_coef[1]
+lm_model1_coef1 <- intercept <- lm_model1_coef[2]
+lm_model1_eq <- paste("estimated model: y = ", round(lm_model1_intercept, 2), " + ", round(lm_model1_coef1, 2), " *x" )
+#Add predictions and prediction error to dataframe test data and plot predictions against real values
+test_set$prediction <- predictions_model1
+test_set$error <- test_set$distance_of_car - predictions_model1
+ggplot(testSet, aes(x = speed.of.cars, y = distance.of.car)) + geom_point() + geom_abline(intercept = COEFF.INTERCEPT, slope = COEFF.SLOPE) + ggtitle(lm_model1_eq)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

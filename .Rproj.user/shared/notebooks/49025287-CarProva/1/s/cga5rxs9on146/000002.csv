@@ -1,0 +1,3 @@
+"0","names(cars) <-c(""name.of.car"",""speed.of.car"", ""distance.of.car"")"
+"0","cars$squared.speed <- cars$speed.of.car*cars$speed.of.car"
+"0",""

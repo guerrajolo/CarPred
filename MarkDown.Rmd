@@ -1,0 +1,90 @@
+---
+title: " Cars Prediction"
+author: "Gherardo Lattanzi"
+date: "2016-08-15"
+output: html_document
+---
+
+The Following is the initial dataset given for this Report. 50 Observations with 2 attributes each. 
+```{r pressure, echo = TRUE}
+cars<- read.csv("~/Desktop/Ubiqum/Task2/cars.csv")
+knitr::kable(cars, align = "c")
+```
+
+
+
+## DATA CLEANING
+For the data cleaning work, the names of the colums are now in a technically correct form.
+Moreover, a new column called squared speed is created in order to spot the outliers.
+
+### Create Squared Speed Column
+```{r}
+names(cars) <-c("name.of.car","speed.of.car", "distance.of.car")
+cars$squared.speed <- cars$speed.of.car*cars$speed.of.car
+
+```
+
+### Identify and Eliminate Outliers
+```{r}
+boxplot(cars$distance.of.car, cars$speed.of.car)
+
+outliers <- boxplot(cars$distance.of.car, plot=FALSE)$out
+show(outliers)
+
+###Outliers removed
+cars <- cars[-which(cars$distance.of.car %in% outliers),]
+```
+
+### Training and Testing TestSets
+```{r}
+trainSize<-round(nrow(cars)*0.7) 
+print(trainSize)
+testSize<-nrow(cars)-trainSize
+print(testSize)
+```
+
+```{r}
+training_indices<-sample(seq_len(nrow(cars)),size =trainSize)
+trainSet<-cars[training_indices,]
+testSet<-cars[-training_indices,] 
+print(testSet)
+```
+
+
+### LINEAR REGRESSION
+```{r include=FALSE}
+MOD <- lm(distance.of.car ~ speed.of.car, trainSet)
+summary(MOD)
+
+coefficients(MOD)
+
+COEFF.INTERCEPT <- coefficients(MOD)[1]
+COEFF.SLOPE <- coefficients(MOD)[2]
+
+
+```
+###Prediction
+```{r}
+Prediction<- predict(MOD,testSet)
+
+knitr::kable(Prediction)
+```
+
+```{r cars, echo=FALSE}
+plot(cars$distance.of.car, cars$Squared.Speed)
+```
+
+### GRAPHIC Distance and Squared Speed
+```{r eval=FALSE, include=FALSE}
+
+library(ggplot2)
+speed.of.car2 <- testSet$Squared.Speed
+ggplot(testSet,
+       aes(x = Squared.Speed, y = distance.of.car)) + 
+  geom_point(color = "blue") +
+ geom_abline(intercept = COEFF.INTERCEPT1, slope = COEFF.SLOPE1) + 
+ggtitle("Better fit of the Regression")
+
+
+```
+

@@ -1,0 +1,8 @@
+"0",""
+"0","library(ggplot2)"
+"0","speed.of.car2 <- testSet$Squared.Speed"
+"0","ggplot(testSet,"
+"0","       aes(x = Squared.Speed, y = distance.of.car)) + "
+"0","  geom_point(color = ""blue"") +"
+"0"," geom_abline(intercept = COEFF.INTERCEPT1, slope = COEFF.SLOPE1) + "
+"0","ggtitle(""Better fit of the Regression"")"

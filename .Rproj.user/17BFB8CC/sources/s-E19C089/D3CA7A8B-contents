@@ -1,0 +1,52 @@
+---
+title: ""
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+---
+
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+View(cars)
+
+#RENAME THE COLUMS
+names(cars) <-c("name.of.car","speed.of.car", "distance.of.car")
+
+#Create Squared Speed Column
+cars$Squared.Speed<- cars$speed.of.car*cars$speed.of.car
+
+#REMOVE THE OUTLIER
+outliers <- boxplot(cars$distance.of.car, plot=FALSE)$out
+show(outliers)
+
+cars <- cars[-which(cars$distance.of.car %in% outliers),]
+
+plot(cars$distance.of.car, cars$speed.of.car)
+
+
+  #SET TRAINING AND TESTING
+showtrainSize<-round(nrow(cars)*0.7) 
+testSize<-nrow(cars)-trainSize
+training_indices<-sample(seq_len(nrow(cars)),size =trainSize)
+trainSet<-cars[training_indices,]
+testSet<-cars[-training_indices,] 
+
+#LINEAR REGRESSION
+MOD <- lm(distance.of.car ~ speed.of.car, trainSet)
+summary(MOD)
+
+Prediction <- predict(MOD,testSet)
+
+Predictions
+Predictions
+1           2           3           4           6          12          15 
+-13.7686606 -13.7686606   0.6392001   0.6392001  10.2444406  24.6523013  24.6523013 
+17          28          32          35          41          42          49 
+29.4549216  43.8627823  53.4680228  53.4680228  63.0732632  63.0732632  82.2837442 
+> 
+
+
+
+```
+

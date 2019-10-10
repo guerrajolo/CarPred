@@ -1,0 +1,7 @@
+"0","plot(cars$distance.of.car, cars$speed.of.car)"
+"2","no non-missing arguments to min; returning Inf"
+"2","no non-missing arguments to max; returning -Inf"
+"2","no non-missing arguments to min; returning Inf"
+"2","no non-missing arguments to max; returning -Inf"
+"2","Error in plot.window(...) : need finite 'xlim' values
+"

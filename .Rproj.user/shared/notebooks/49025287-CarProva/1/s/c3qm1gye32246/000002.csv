@@ -1,0 +1,4 @@
+"0","training_indices<-sample(seq_len(nrow(cars)),size =trainSize)"
+"0","trainSet<-cars[training_indices,]"
+"0","testSet<-cars[-training_indices,] "
+"0","print(testSet)"

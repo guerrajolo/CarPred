@@ -1,0 +1,3 @@
+"0","cars<- read.csv(""~/Desktop/Ubiqum/cars.csv"")"
+"0","hist(cars$speed.of.car)"
+"0",""

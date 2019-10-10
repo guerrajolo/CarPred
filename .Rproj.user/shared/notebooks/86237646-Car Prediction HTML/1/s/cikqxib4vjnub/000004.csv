@@ -1,0 +1,8 @@
+"0",""
+"0","outliers <- boxplot(cars$distance.of.car, plot=FALSE)$out"
+"0","show(outliers)"
+"1","[1]"
+"1"," 120"
+"1","
+"
+"0","cars <- cars[-which(cars$distance.of.car %in% outliers),]"

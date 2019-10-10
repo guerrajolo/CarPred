@@ -1,0 +1,8 @@
+"0","library(knitr)"
+"0","library(rmdformats)"
+"0",""
+"0","#IMPORT THE DATASET"
+"0","cars<- read_csv(""~/Desktop/Ubiqum/cars.csv"")"
+"2","Error in read_csv(""~/Desktop/Ubiqum/cars.csv"") : 
+  could not find function ""read_csv""
+"

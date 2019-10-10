@@ -1,0 +1,77 @@
+---
+title: " Cars Prediction"
+author: "Gherardo Lattanzi"
+date: "2016-08-15"
+output: html_document
+---
+
+
+```{r pressure, echo = FALSE}
+head(cars)
+cars<- read.csv("~/Desktop/Ubiqum/cars.csv")
+show(cars)
+
+```
+## DATA CLEANING
+```{r}
+names(cars) <-c("name.of.car","speed.of.car", "distance.of.car")
+
+### Create Squared Speed Column
+cars$squared.speed<- cars$speed.of.car*cars$speed.of.car
+
+plot(cars$distance.of.car, cars$squared.speed)
+```
+
+### REMOVE THE OUTLIER
+```{r}
+boxplot(cars$distance.of.car, cars$speed.of.car)
+
+outliers <- boxplot(cars$distance.of.car, plot=FALSE)$out
+show(outliers)
+cars <- cars[-which(cars$distance.of.car %in% outliers),]
+```
+
+### SET TRAINING AND TESTING
+```{r}
+trainSize<-round(nrow(cars)*0.7) 
+print(trainSize)
+testSize<-nrow(cars)-trainSize
+print(testSize)
+```
+
+```{r}
+training_indices<-sample(seq_len(nrow(cars)),size =trainSize)
+trainSet<-cars[training_indices,]
+testSet<-cars[-training_indices,] 
+print(testSet)
+```
+
+
+### LINEAR REGRESSION
+```{r}
+MOD <- lm(distance.of.car ~ speed.of.car, trainSet)
+summary(MOD)
+
+coefficients(MOD)
+
+COEFF.INTERCEPT <- coefficients(MOD)[1]
+COEFF.SLOPE <- coefficients(MOD)[2]
+
+
+```
+
+```{r}
+Prediction<- predict(MOD,testSet)
+Prediction
+
+knitr::kable(Prediction)
+```
+
+```{r cars}
+plot(cars$distance.of.car, cars$speed.of.car)
+```
+
+### GRAPHIC Plotting
+``
+```
+
